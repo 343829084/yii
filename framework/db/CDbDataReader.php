@@ -40,7 +40,7 @@ class CDbDataReader extends CComponent implements Iterator, Countable
 	private $_statement;
 	private $_closed=false;
 	private $_row;
-	private $_index=-1;
+	private $_index;
 
 	/**
 	 * Constructor.
@@ -50,6 +50,7 @@ class CDbDataReader extends CComponent implements Iterator, Countable
 	{
 		$this->_statement=$command->getPdoStatement();
 		$this->_statement->setFetchMode(PDO::FETCH_ASSOC);
+		$this->_index = -1;
 	}
 
 	/**
@@ -197,7 +198,7 @@ class CDbDataReader extends CComponent implements Iterator, Countable
 	{
 		if($this->_index<0)
 		{
-			$this->_row=$this->_statement->fetch();
+			$this->_row=$this->read();
 			$this->_index=0;
 		}
 		else
@@ -230,7 +231,7 @@ class CDbDataReader extends CComponent implements Iterator, Countable
 	 */
 	public function next()
 	{
-		$this->_row=$this->_statement->fetch();
+		$this->_row=$this->read();
 		$this->_index++;
 	}
 
